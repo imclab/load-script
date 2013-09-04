@@ -91,5 +91,5 @@ function exec(err, src) {
   if (calls) {
     while (calls.length) calls.shift()(err);
   }
-  delete async.callbacks[url];
+  delete exports.callbacks[url];
 }
