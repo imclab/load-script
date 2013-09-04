@@ -1,0 +1,16 @@
+{
+  "name": "async-script",
+  "description": "facebook component (maybe loaders/facebook?)",
+  "version": "0.0.1",
+  "dependencies": {
+
+  },
+  "development": {
+    "visionmedia/mocha": "*",
+    "timoxley/assert": "*"
+  },
+  "scripts": [
+    "index.js"
+  ],
+  "license": "MIT"
+}
