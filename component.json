@@ -1,7 +1,8 @@
 {
-  "name": "async-script",
-  "description": "facebook component (maybe loaders/facebook?)",
-  "version": "0.0.1",
+  "name": "load-script",
+  "repo": "viatropos/load-script",
+  "description": "Generic script loading component",
+  "version": "0.0.2",
   "dependencies": {
 
   },

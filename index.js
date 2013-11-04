@@ -22,20 +22,26 @@ exports.callbacks = {};
  *
  * @param {String} src
  * @param {Function} [fn] Callback
+ * @param {String} [name] The name of the method if this
+ *   a callback used by some library like Facebook that has
+ *   an initialize function called.
  * @api public
  */
 
-function load(src, fn) {
+function load(src, fn, name) {
   // if the script is already loaded, callback immediately
   if (document.getElementById(src)) {
-    if (fn) fn();
+    if (!exports.callbacks[src])
+      if (fn) fn();
+    else
+      exports.callbacks[src].push(fn);
+    
     return;
   }
 
   // add callback for src
-  if (fn) {
-    (exports.callbacks[src] = exports.callbacks[url] || []).push(fn); 
-  }
+  exports.callbacks[src] = [];
+  if (fn) exports.callbacks[src].push(fn);
 
   var head = document.head || document.getElementsByTagName('head')[0];
   var script = document.createElement('script');
@@ -46,8 +52,16 @@ function load(src, fn) {
   script.async = true;
   script.src = src;
 
-  var onend = 'onload' in script ? loadScript : loadScriptOnIE;
-  onend(script);
+  if (name) {
+    // callback when script initialize function is called.
+    window[name] = function(){
+      exec(null, src);
+    };
+  } else {
+    // callback when script loads
+    var onend = 'onload' in script ? loadScript : loadScriptOnIE;
+    onend(script);
+  }
 
   head.appendChild(script);
 }
@@ -91,5 +105,5 @@ function exec(err, src) {
   if (calls) {
     while (calls.length) calls.shift()(err);
   }
-  delete exports.callbacks[url];
+  delete exports.callbacks[src];
 }
